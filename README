@@ -1,0 +1,18 @@
+morseCodes data structure:
+states bitfield
+    the states bitfield holds 5 boolean values
+        IN_MESS:    if it is currently printing a message
+        BET_CHARS:  if it is currently in the space between characters
+        BET_MORSE:  if it is currently in the space between Morse symbols
+        END:        if it is at the end of the message
+        SPACE:      if it is printing a space
+
+    |   7    |   6    |   5    |   4   |  3  |     2     |     1     |    0    |
+    | Unused | Unused | Unused | SPACE | END | BET_MORSE | BET_CHARS | IN_MESS |
+
+codes bitfield array
+    first element in the array stores the number of length of the signal
+    second element in the array store the Morse code conversion
+
+    |   7   |   6   |   5   |   4   |   3   |   2   |   1   |   0   |
+    |  8th  |  7th  |  6th  |  5th  |  4th  |  3rd  |  2nd  |  1st  |

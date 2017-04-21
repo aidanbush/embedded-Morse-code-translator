@@ -1,0 +1,120 @@
+Translating ASCII char to Morse code
+lookup char on table and get two integers on for length of code and one used to
+check bits to see if it is a dot(0) or dash(1)
+
+sym(index): [{len}, {binary}, {int}] {Morse code}
+
+a( 0): [2,    10, 2] .-
+b( 1): [4,  0001, 1] -...
+c( 2): [4,  0101, 5] -.-.
+d( 3): [3,   001, 1] -..
+e( 4): [1,     0, 0] .
+f( 5): [4,  0100, 4] ..-.
+g( 6): [3,   011, 3] --.
+h( 7): [4,  0000, 0] ....
+i( 8): [2,    00, 0] ..
+j( 9): [4,  1110,14] .---
+k(10): [3,   101, 5] -.-
+l(11): [4,  0010, 2] .-..
+m(12): [2,    11, 3] --
+n(13): [2,    01, 1] -.
+o(14): [3,   111, 7] ---
+p(15): [4,  0110, 6] .--.
+q(16): [4,  1011,11] --.-
+r(17): [3,   010, 2] .-.
+s(18): [3,   000, 0] ...
+t(19): [1,     1, 1] -
+u(20): [3,   100, 4] ..-
+v(21): [4,  1000, 8] ...-
+w(22): [3,   110, 6] .--
+x(23): [4,  1001, 9] -..-
+y(24): [4,  1101,13] -.--
+z(25): [4,  0011, 3] --..
+0(26): [5, 11111,31] -----
+1(27): [5, 11110,30] .----
+2(28): [5, 11100,28] ..---
+3(29): [5, 11000,24] ...--
+4(30): [5, 10000,16] ....-
+5(31): [5, 00000, 0] .....
+6(32): [5, 00001, 1] -....
+7(33): [5, 00011, 3] --...
+8(34): [5, 00111, 7] ---..
+9(35): [5, 01111,15] ----.
+.(36): [6,101010,42] .-.-.-
+,(37): [6,110011,54] --..--
+:(38): [6,111000,56] ---...
+?(39): [6,001100,12] ..--..
+'(40): [6,011110,30] .----.
+-(41): [6,100001,33] -....-
+/(42): [5, 01001, 9] -..-.
+((43): [5, 01101,13] -.--.
+)(44): [6,101101,45] -.--.-
+"(45): [6,010010,18] .-..-.
+=(46): [5, 10001,17] -...-
++(47): [5, 01010,10] .-.-.
+@(48): [6,010110,22] .--.-.
+
+
+ring buffer
+    -holds chars excluding current
+    -next char pos in ring
+    -len of chars in ring
+char buffer
+    -current char
+    -current char pos
+
+
+receive character and add to ring buffer
+once received turn on timer isr
+use timer isr to regulate message
+
+Receive ISR
+-check if is is a valid character and add it to the end of the buffer
+-turn on transmit ISR
+
+Transmit ISR
+-check character its on
+-print Morse code, turn on led, and set next timer interrupt
+-if end of character send last spaces
+-turn on timer ISR
+-turn off transmit ISR (timer will turn it back on once done)
+
+Timer ISR
+-turn off led
+-turn off Timer ISR
+-turn on Transmit ISR
+
+
+current:
+
+Implemented:
+    receive chars(missing space)
+    translate chars to Morse code via lookup table
+    transmit Morse code over UART
+    toggle led in conjunction with Morse code
+    space between characters (led and UART char)
+    space between Morse signals
+    add space to accepted chars
+    implement space char in Morse
+    fix space in Morse to not always print
+    turn off radio on start
+    fix adding chars in the middle of the end of work sig
+    refactor led macros
+    remove debugging colours
+    add file headers
+    go over style
+    verify all signals
+    replace START_SIG and END_SIG with START_INDEX and END_INDEX
+    replace all the uint8_t vars used as Boolean with single int
+    refactor timerb ISR
+    refactor TX ISR
+    go over comments
+    README
+
+TODO:
+
+tests:
+    test buffer
+    test multiple messages (multiple start and end signals)
+    test spaces
+
